@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 require("dotenv").config();
 
 const port = process.env.PORT || 5000;
@@ -26,11 +26,23 @@ async function run() {
       .db("resaleProducts")
       .collection("resaleProductCategories");
 
+    const categoryWiseCollection = client
+      .db("resaleProducts")
+      .collection("categoryWiseProducts");
+
     // make api for all resale product categories
     app.get("/resaleProductCategories", async (req, res) => {
       const query = {};
       const options = await categoryCollection.find(query).toArray();
       res.send(options);
+    });
+
+    // category wise product
+    app.get("/category/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { categories: id };
+      const selectedCat = await categoryWiseCollection.find(query).toArray();
+      res.send(selectedCat);
     });
   } finally {
   }
