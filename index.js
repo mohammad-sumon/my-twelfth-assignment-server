@@ -30,6 +30,8 @@ async function run() {
       .db("resaleProducts")
       .collection("categoryWiseProducts");
 
+    const usersCollection = client.db("resaleProducts").collection("users");
+
     // make api for all resale product categories
     app.get("/resaleProductCategories", async (req, res) => {
       const query = {};
@@ -43,6 +45,13 @@ async function run() {
       const query = { categories: id };
       const selectedCat = await categoryWiseCollection.find(query).toArray();
       res.send(selectedCat);
+    });
+
+    // post users data into the database
+    app.post("/users", async (req, res) => {
+      const user = req.body;
+      const result = await usersCollection.insertOne(user);
+      res.send(result);
     });
   } finally {
   }
