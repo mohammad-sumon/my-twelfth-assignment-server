@@ -51,6 +51,10 @@ async function run() {
 
     const usersCollection = client.db("resaleProducts").collection("users");
 
+    const bookingsCollection = client
+      .db("resaleProducts")
+      .collection("bookings");
+
     // make api for all resale product categories
     app.get("/resaleProductCategories", async (req, res) => {
       const query = {};
@@ -70,6 +74,13 @@ async function run() {
       const query = { categories: id };
       const selectedCat = await categoryWiseCollection.find(query).toArray();
       res.send(selectedCat);
+    });
+
+    // bookings post api
+    app.post("/bookings", async (req, res) => {
+      const booking = req.body;
+      const result = await bookingsCollection.insertOne(booking);
+      res.send(result);
     });
 
     // stripe payment api
