@@ -161,7 +161,7 @@ async function run() {
     });
 
     // make admin
-    app.put("/users/admin/:id", verifyJWT, async (req, res) => {
+    app.put("/users/admin/:id", async (req, res) => {
       const decodedEmail = req.decoded.email;
       const query = { email: decodedEmail };
       const user = await usersCollection.findOne(query);
