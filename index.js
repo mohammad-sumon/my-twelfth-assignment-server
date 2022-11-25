@@ -109,6 +109,22 @@ async function run() {
       res.send({ isAdmin: user?.role === "admin" });
     });
 
+    // find a user if he/she seller or not
+    app.get("/users/seller/:email", async (req, res) => {
+      const email = req.params.email;
+      const query = { email };
+      const user = await usersCollection.findOne(query);
+      res.send({ isSeller: user?.role === "Seller" });
+    });
+
+    // find a user if he/she buyer or not
+    app.get("/users/buyer/:email", async (req, res) => {
+      const email = req.params.email;
+      const query = { email };
+      const user = await usersCollection.findOne(query);
+      res.send({ isBuyer: user?.role === "Buyer" });
+    });
+
     // make admin
     app.put("/users/admin/:id", verifyJWT, async (req, res) => {
       const decodedEmail = req.decoded.email;
