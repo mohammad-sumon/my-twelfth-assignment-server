@@ -83,6 +83,14 @@ async function run() {
       res.send(result);
     });
 
+    // get bookings api
+    app.get("/bookings", async (req, res) => {
+      const email = req.query.email;
+      const query = { useremail: email };
+      const bookings = await bookingsCollection.find(query).toArray();
+      res.send(bookings);
+    });
+
     // stripe payment api
     app.post("/create-payment-intent", async (req, res) => {
       const price = req.body.price;
